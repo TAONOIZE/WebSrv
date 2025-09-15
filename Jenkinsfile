@@ -16,21 +16,13 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build & Test') {
             steps {
                 sh 'echo "Building project..."'
-                // Example: for Node.js
-                // sh 'npm install && npm run build'
-                // Example: for Java (Maven)
+                // Example for Node.js:
+                // sh 'npm install && npm test'
+                // Example for Java:
                 // sh 'mvn clean package -DskipTests'
-            }
-        }
-
-        stage('Unit Tests') {
-            steps {
-                sh 'echo "Running unit tests..."'
-                // sh 'npm test'
-                // sh 'mvn test'
             }
         }
 
@@ -43,7 +35,7 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Push Docker Image to Docker Hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'nktdkr23/php-apache', usernameVariable: 'nktdkr23', passwordVariable: 'Nkt@dmin24#')]) {
                     sh """
@@ -59,7 +51,9 @@ pipeline {
             steps {
                 withKubeConfig([credentialsId: 'kubeconfig-jenkins']) {
                     sh """
+                    # Update Kubernetes deployment to use the new image
                     kubectl set image deployment/${DEPLOYMENT_NAME} ${DEPLOYMENT_NAME}=${DOCKER_IMAGE}:${BUILD_NUMBER} -n ${K8S_NAMESPACE}
+                    # Wait for rollout to complete
                     kubectl rollout status deployment/${DEPLOYMENT_NAME} -n ${K8S_NAMESPACE}
                     """
                 }
