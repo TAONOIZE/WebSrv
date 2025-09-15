@@ -1,0 +1,20 @@
+piVersion: apps/v1
+kind: Deployment
+metadata:
+  name: websrv
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: websrv
+  template:
+    metadata:
+      labels:
+        app: websrv
+    spec:
+      containers:
+      - name: websrv
+        image: nktdkr23/php-apache:latest
+        ports:
+        - containerPort: 80
