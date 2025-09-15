@@ -4,9 +4,9 @@ pipeline {
     environment {
         GITHUB_REPO = 'https://github.com/TAONOIZE/WebSrv.git'
         BRANCH = 'main'
-        DOCKER_IMAGE = "your-dockerhub-username/websrv"
-        K8S_NAMESPACE = "default"
-        DEPLOYMENT_NAME = "websrv"
+        DOCKER_IMAGE = "nktdkr23/php-apache"
+        K8S_NAMESPACE = "utcc-it-dev"
+        DEPLOYMENT_NAME = "web-deployment"
     }
 
     stages {
