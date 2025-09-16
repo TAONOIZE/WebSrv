@@ -5,6 +5,7 @@ pipeline {
         GITHUB_REPO = 'https://github.com/TAONOIZE/WebSrv.git'
         BRANCH = 'main'
         DOCKER_IMAGE = "nktdkr23/php-apache"
+        DOCKER_TAG   = "29"
         K8S_NAMESPACE = "utcc-it-dev"
         DEPLOYMENT_NAME = "web-deployment"
         CREDENTIALS_ID = "ecb3549b-e779-4e49-981e-adde049fd5e3"
