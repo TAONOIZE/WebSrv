@@ -5,7 +5,6 @@ pipeline {
         GITHUB_REPO = 'https://github.com/TAONOIZE/WebSrv.git'
         BRANCH = 'main'
         DOCKER_IMAGE = "nktdkr23/php-apache"
-        //BUILD_NUMBER = "v0.2"
         K8S_NAMESPACE = "utcc-it-dev"
         DEPLOYMENT_NAME = "web-deployment"
     }
@@ -50,7 +49,7 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                withKubeConfig([credentialsId: 'fb178c28-43bb-4f81-8353-9aa4c0415f93']) {
+                withKubeConfig([credentialsId: 'nkp-kube-dev']) {
                     sh """
                     # Update Kubernetes deployment to use the new image
                     kubectl set image deployment/${DEPLOYMENT_NAME} ${DEPLOYMENT_NAME}=${DOCKER_IMAGE}:${BUILD_NUMBER} -n ${K8S_NAMESPACE}
