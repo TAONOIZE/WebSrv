@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: websrv-deployment
+  name: web-deployment
   labels:
     app: websrv
 spec:
