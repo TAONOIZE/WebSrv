@@ -53,11 +53,17 @@ pipeline {
             steps {
                 withKubeConfig([credentialsId: 'fb178c28-43bb-4f81-8353-9aa4c0415f93']) {
                     sh """
-                    # Update Kubernetes deployment to use the new image
-                    kubectl set image deployment/${DEPLOYMENT_NAME} ${DEPLOYMENT_NAME}=${DOCKER_IMAGE}:${BUILD_NUMBER} -n ${K8S_NAMESPACE}
-                    # Wait for rollout to complete
-                    kubectl rollout status deployment/${DEPLOYMENT_NAME} -n ${K8S_NAMESPACE}
+                   if ! kubectl get deployment ${DEPLOYMENT_NAME} -n ${K8S_NAMESPACE} >/dev/null 2>&1; then
+                        kubectl create deployment ${DEPLOYMENT_NAME} --image=${DOCKER_IMAGE}:${DOCKER_TAG} -n ${K8S_NAMESPACE}
+                    else
+                        kubectl set image deployment/${DEPLOYMENT_NAME} ${DEPLOYMENT_NAME}=${DOCKER_IMAGE}:${DOCKER_TAG} -n ${K8S_NAMESPACE}
+                    fi
                     """
+                    //# Update Kubernetes deployment to use the new image
+                    //kubectl set image deployment/${DEPLOYMENT_NAME} ${DEPLOYMENT_NAME}=${DOCKER_IMAGE}:${BUILD_NUMBER} -n ${K8S_NAMESPACE}
+                    //# Wait for rollout to complete
+                    //kubectl rollout status deployment/${DEPLOYMENT_NAME} -n ${K8S_NAMESPACE}
+                    //"""
                 }
             }
         }
