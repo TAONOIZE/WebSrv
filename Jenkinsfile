@@ -38,7 +38,7 @@ pipeline {
 
         stage('Push Docker Image to Docker Hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: '${ecb3549b-e779-4e49-981e-adde049fd5e3}', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]){
+                withCredentials([usernamePassword(credentialsId: "${CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]){
                     sh """
                     echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
                     docker push ${DOCKER_IMAGE}:${BUILD_NUMBER}
@@ -50,7 +50,7 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                withKubeConfig([credentialsId: 'nkp-kube-dev']) {
+                withKubeConfig([credentialsId: 'fb178c28-43bb-4f81-8353-9aa4c0415f93']) {
                     sh """
                     # Update Kubernetes deployment to use the new image
                     kubectl set image deployment/${DEPLOYMENT_NAME} ${DEPLOYMENT_NAME}=${DOCKER_IMAGE}:${BUILD_NUMBER} -n ${K8S_NAMESPACE}
