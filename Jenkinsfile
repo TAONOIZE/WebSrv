@@ -51,7 +51,7 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                withKubeConfig([credentialsId: 'nkp-kube-dev', variable: 'nkp-kube-dev.conf']) {
+                withKubeConfig([credentialsId: 'fb178c28-43bb-4f81-8353-9aa4c0415f93']) {
                     sh """
                     # Update Kubernetes deployment to use the new image
                     kubectl set image deployment/${DEPLOYMENT_NAME} ${DEPLOYMENT_NAME}=${DOCKER_IMAGE}:${BUILD_NUMBER} -n ${K8S_NAMESPACE}
