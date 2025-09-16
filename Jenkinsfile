@@ -4,7 +4,7 @@ pipeline {
     environment {
         GITHUB_REPO = 'https://github.com/TAONOIZE/WebSrv.git'
         BRANCH = 'main'
-        DOCKER_IMAGE = "nktdkr23/php-apache:v0.2"
+        DOCKER_IMAGE = "nktdkr23/php-apache"
         K8S_NAMESPACE = "utcc-it-dev"
         DEPLOYMENT_NAME = "web-deployment"
     }
