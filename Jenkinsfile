@@ -29,10 +29,17 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh """
-                docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} .
-                docker tag ${DOCKER_IMAGE}:${BUILD_NUMBER} ${DOCKER_IMAGE}:latest
-                """
+                //sh """
+                //docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} .
+                //docker tag ${DOCKER_IMAGE}:${BUILD_NUMBER} ${DOCKER_IMAGE}:latest
+                //"""
+
+                sh '''
+                    export DOCKER_BUILDKIT=1
+                    docker buildx create --name mybuilder --use || true
+                    docker buildx build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} .
+                    docker tag ${DOCKER_IMAGE}:${BUILD_NUMBER} ${DOCKER_IMAGE}:latest
+                '''
             }
         }
 
