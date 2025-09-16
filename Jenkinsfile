@@ -8,6 +8,7 @@ pipeline {
         K8S_NAMESPACE = "utcc-it-dev"
         DEPLOYMENT_NAME = "web-deployment"
         CREDENTIALS_ID = "ecb3549b-e779-4e49-981e-adde049fd5e3"
+        CREDENTIALS_KUBEID = "fb178c28-43bb-4f81-8353-9aa4c0415f93"
     }
 
     stages {
@@ -50,7 +51,7 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                withKubeConfig([credentialsId: 'fb178c28-43bb-4f81-8353-9aa4c0415f93']) {
+                withKubeConfig([credentialsId: "${CREDENTIALS_KUBEID}"]) {
                     sh """
                     # Update Kubernetes deployment to use the new image
                     kubectl set image deployment/${DEPLOYMENT_NAME} ${DEPLOYMENT_NAME}=${DOCKER_IMAGE}:${BUILD_NUMBER} -n ${K8S_NAMESPACE}
