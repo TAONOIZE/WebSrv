@@ -4,7 +4,7 @@ pipeline {
     environment {
         GITHUB_REPO = 'https://github.com/TAONOIZE/WebSrv.git'
         BRANCH = 'main'
-        DOCKER_IMAGE = "nktdkr23/php-apache:v0.2"
+        DOCKER_IMAGE = "nginx"
         K8S_NAMESPACE = "utcc-it-dev"
         DEPLOYMENT_NAME = "web-deployment"
     }
@@ -26,18 +26,18 @@ pipeline {
             }
         }
 
-       // stage('Build Docker Image') {
-         //   steps {
-           //     sh """
-             //   docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} .
-               // docker tag ${DOCKER_IMAGE}:${BUILD_NUMBER} ${DOCKER_IMAGE}:latest
-               // """
-            //}
-        //}
+        stage('Build Docker Image') {
+            steps {
+                sh """
+                docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} .
+                docker tag ${DOCKER_IMAGE}:${BUILD_NUMBER} ${DOCKER_IMAGE}:latest
+                """
+            }
+        }
 
         stage('Push Docker Image to Docker Hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'nktdkr23', passwordVariable: 'Nkt@dmin24#')]){
+                withCredentials([usernamePassword(credentialsId: 'baaf3c08-83b6-4e87-bcc4-f4176a04a2bf', usernameVariable: 'nktdkr23', passwordVariable: 'Nkt@dmin24#')]){
                     sh """
                     echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
                     docker push ${DOCKER_IMAGE}:${BUILD_NUMBER}
