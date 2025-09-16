@@ -37,11 +37,13 @@ pipeline {
 
         stage('Push Docker Image to Docker Hub') {
             steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'nktdkr23', passwordVariable: 'Nkt@dmin24#')]){
                     sh """
                     echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
                     docker push ${DOCKER_IMAGE}:${BUILD_NUMBER}
                     docker push ${DOCKER_IMAGE}:latest
                     """
+                }
             }
         }
 
