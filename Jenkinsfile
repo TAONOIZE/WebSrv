@@ -36,7 +36,6 @@ pipeline {
 
                 sh '''
                     export DOCKER_BUILDKIT=1
-                    docker buildx create --name mybuilder --use || true
                     docker buildx build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} .
                     docker tag ${DOCKER_IMAGE}:${BUILD_NUMBER} ${DOCKER_IMAGE}:latest
                 '''
